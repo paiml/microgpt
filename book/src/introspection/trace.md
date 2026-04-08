@@ -38,11 +38,13 @@ Stage 4: Language Model Head
 
 ## What the trace reveals
 
-### RMSNorm amplification
+### RMSNorm normalization
 
-After embedding, `L2=1.04`. After RMSNorm, `L2=8.94` — a ~9x increase.
-RMSNorm normalizes the *root mean square* to 1.0 per row, but with 16
-dimensions this means `L2 ≈ √16 = 4.0` per row × √5 rows ≈ 8.94 total.
+After RMSNorm, `L2≈8.94` regardless of input magnitude. This is a
+structural invariant: RMSNorm normalizes RMS to 1.0 per row, so each
+row's L2 = `√16 = 4.0`, and total L2 = `√5 × 4.0 ≈ 8.94` for 5 rows
+of 16 dimensions. The pre-RMSNorm L2 (1.04 here) depends on random
+initialization.
 
 ### Attention is a small perturbation
 

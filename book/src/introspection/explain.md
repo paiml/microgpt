@@ -28,8 +28,9 @@ production models use `d_k=128`.
 
 ## Attention weight visualization
 
-For input "mar" (tokens `[BOS, m, a, r]`), the attention weights show
-how each position attends to earlier positions:
+For input "mar" (tokens `[BOS, m, a, r]`), the attention weights at
+random initialization show the causal structure (values vary per run,
+but the structural invariants are constant):
 
 ```text
 Head 0:
@@ -45,12 +46,14 @@ Head 3:
   pos 3 → [0.247, 0.223, 0.250, 0.280]   ← head 3 focuses more on 'r'
 ```
 
-Key observations:
+Structural invariants (hold for ANY initialization):
 - **Row 0** is always `[1, 0, 0, 0]` — the BOS token can only see itself
 - **Upper triangle is zero** — causal masking prevents attending to the future
 - **Each row sums to 1.0** — softmax normalizes attention weights
-- **Different heads learn different patterns** — head 0 vs head 3 distribute
-  attention weight differently
+
+The specific non-trivial values (e.g., 0.482 vs 0.518) reflect random
+initialization, not learned patterns. After training, head specialization
+emerges.
 
 ## Causal mask explained
 

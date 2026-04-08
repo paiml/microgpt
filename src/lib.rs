@@ -744,4 +744,51 @@ mod tests {
             let _ = model.forward(&[99]);
         });
     }
+
+    // ── Learning regression test ────────────────────────────────────────
+
+    #[test]
+    fn model_learns_loss_decreases() {
+        use aprender::nn::loss::CrossEntropyLoss;
+
+        let mut model = MicroGPT::new();
+        let loss_fn = CrossEntropyLoss::new();
+        let mut optimizer = Adam::new();
+
+        // Initial loss on "emma"
+        let tokens = tokenize("emma");
+        let input = &tokens[..tokens.len() - 1];
+        #[allow(clippy::cast_precision_loss)]
+        let targets: Vec<f32> = tokens[1..].iter().map(|&t| t as f32).collect();
+
+        let logits = model.forward(input);
+        let initial_loss = loss_fn.forward(&logits, &Tensor::from_slice(&targets));
+        let initial_val = initial_loss.item();
+        initial_loss.backward();
+        let mut params = model.parameters_mut();
+        optimizer.step(&mut params, LR);
+        clear_graph();
+
+        // Train for 50 steps on repeated "emma"
+        for _ in 0..50 {
+            let logits = model.forward(input);
+            let loss = loss_fn.forward(&logits, &Tensor::from_slice(&targets));
+            loss.backward();
+            let mut params = model.parameters_mut();
+            optimizer.step(&mut params, LR);
+            clear_graph();
+        }
+
+        // Final loss should be lower
+        no_grad(|| {
+            let logits = model.forward(input);
+            let final_loss = loss_fn.forward(&logits, &Tensor::from_slice(&targets));
+            let final_val = final_loss.item();
+            assert!(
+                final_val < initial_val,
+                "model did not learn: initial={initial_val:.4} final={final_val:.4}"
+            );
+        });
+        clear_graph();
+    }
 }

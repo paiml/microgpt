@@ -36,9 +36,10 @@ jobs:
       - name: Coverage
         run: |
           cargo llvm-cov --lib --summary-only 2>&1 | tee coverage.txt
-          COVERAGE=$(grep TOTAL coverage.txt | awk '{print $NF}' | tr -d '%')
+          # Extract line coverage (10th column in TOTAL row, not $NF which may be branch)
+          COVERAGE=$(grep TOTAL coverage.txt | awk '{for(i=1;i<=NF;i++) if($i ~ /[0-9]+\.[0-9]+%/ && seen++) {print $i; exit}}' | tr -d '%')
           echo "Line coverage: ${COVERAGE}%"
-          if (( $(echo "$COVERAGE < 95" | bc -l) )); then
+          if [ -z "$COVERAGE" ] || (( $(echo "$COVERAGE < 95" | bc -l) )); then
             echo "::error::Coverage ${COVERAGE}% is below 95% threshold"
             exit 1
           fi

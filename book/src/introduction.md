@@ -7,8 +7,8 @@ to Rust using [aprender](https://github.com/paiml/aprender).
 
 microGPT is a 4,192-parameter GPT that generates human-like names after
 training on 32K examples. It demonstrates the algorithmic essence of large
-language models: tokenization, embeddings, multi-head attention with a KV
-cache, residual connections, RMSNorm, MLPs, and cross-entropy loss with
+language models: tokenization, embeddings, multi-head attention with causal masking,
+residual connections, RMSNorm, MLPs, and cross-entropy loss with
 backpropagation.
 
 Everything else is just efficiency.
