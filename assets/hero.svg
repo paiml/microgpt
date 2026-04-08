@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 220">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f0f23"/>
+      <stop offset="100%" stop-color="#1a1a3e"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="220" rx="12" fill="url(#bg)"/>
+  <text x="40" y="72" font-family="monospace" font-size="42" font-weight="bold" fill="#e2e8f0">microGPT</text>
+  <text x="40" y="105" font-family="monospace" font-size="16" fill="#94a3b8">4,192 parameters  |  1 layer  |  4 heads  |  16-dim embeddings</text>
+  <text x="40" y="140" font-family="monospace" font-size="14" fill="#64748b">Karpathy's microGPT ported to Rust with aprender</text>
+  <rect x="40" y="160" width="720" height="1" fill="#334155"/>
+  <text x="40" y="190" font-family="monospace" font-size="13" fill="#6366f1">tokens</text>
+  <text x="100" y="190" font-family="monospace" font-size="13" fill="#475569">-&gt;</text>
+  <text x="130" y="190" font-family="monospace" font-size="13" fill="#6366f1">embed</text>
+  <text x="195" y="190" font-family="monospace" font-size="13" fill="#475569">-&gt;</text>
+  <text x="225" y="190" font-family="monospace" font-size="13" fill="#6366f1">RMSNorm</text>
+  <text x="315" y="190" font-family="monospace" font-size="13" fill="#475569">-&gt;</text>
+  <text x="345" y="190" font-family="monospace" font-size="13" fill="#8b5cf6">4-head attn</text>
+  <text x="460" y="190" font-family="monospace" font-size="13" fill="#475569">-&gt;</text>
+  <text x="490" y="190" font-family="monospace" font-size="13" fill="#8b5cf6">MLP(ReLU)</text>
+  <text x="595" y="190" font-family="monospace" font-size="13" fill="#475569">-&gt;</text>
+  <text x="625" y="190" font-family="monospace" font-size="13" fill="#6366f1">logits</text>
+  <text x="690" y="190" font-family="monospace" font-size="13" fill="#475569">-&gt;</text>
+  <text x="720" y="190" font-family="monospace" font-size="13" fill="#22c55e">names</text>
+</svg>

@@ -2,6 +2,10 @@
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![book](https://img.shields.io/badge/book-mdBook-blue.svg)](https://paiml.github.io/microgpt/)
 
+<p align="center">
+  <img src="assets/hero.svg" alt="microGPT — tokens → embed → RMSNorm → 4-head attn → MLP → logits → names" width="800">
+</p>
+
 # microGPT
 
 Karpathy's [microGPT](https://karpathy.github.io/2026/02/12/microgpt/) ported
