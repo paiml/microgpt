@@ -1,0 +1,13 @@
+[package]
+name = "microgpt"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.89"
+authors = ["Noah Gift <noah@paiml.com>"]
+license = "MIT"
+description = "Karpathy's microGPT ported to Rust with aprender — a 4,192-parameter GPT that generates names"
+repository = "https://github.com/paiml/microgpt"
+
+[dependencies]
+aprender-core = "0.29"
+rand = "0.9"
