@@ -1,26 +1,26 @@
 {
   "version": "1.4.0",
-  "built_at": "2026-04-08T08:20:09.647282489+00:00",
+  "built_at": "2026-04-08T08:45:33.727827837+00:00",
   "project_root": "/home/noah/src/microgpt",
-  "function_count": 76,
+  "function_count": 77,
   "file_count": 11,
   "languages": [
-    "Rust",
-    "Python"
+    "Python",
+    "Rust"
   ],
-  "avg_tdg_score": 0.085789435,
+  "avg_tdg_score": 0.08623373,
   "file_checksums": {
-    "src/lib.rs": "f28add14cf49ec42ca52edf7701954e0040204bdf1de0d2661ebb57e04bf70c4",
-    "src/main.rs": "72cbef55f0dce071d641e36cf973edc82ad1935555935f0147152102e95ea800",
-    "examples/inspect_model.rs": "6496f930114ca00e6a3332b39e511f411c49c009afa6d0f6d0fffd6c2adfdafe",
-    "build.rs": "5fd1ecb0ba9a28e0ad193a77f94ae2b834e576b37037bb1c120a91873f925af7",
-    "tests/parity.rs": "3d8ca8c156b456ec55cfb43fa84385e7b2ea2e1ab9ab012d3f0eb7c1663caba2",
-    "tests/book_contract.rs": "5b69b503a226c39171b2e7855537f76c4299391e0b8cd8bfee7dbbf757252c88",
-    "examples/trace_forward.rs": "b956c3d07b4da5d505439887d74035bcd3a48e50142c10c523cfb0c3696987e1",
     "tests/readme_contract.rs": "fb5e4afa8972857d70b1c8216cfa73465bcc4d5044eae64142fa6dba0082d55d",
-    "examples/explain_attention.rs": "b530aa136ea172731ad0e6fe4e9b15d965486da562dc27c34610967acfe5f052",
+    "build.rs": "5fd1ecb0ba9a28e0ad193a77f94ae2b834e576b37037bb1c120a91873f925af7",
+    "examples/inspect_model.rs": "6496f930114ca00e6a3332b39e511f411c49c009afa6d0f6d0fffd6c2adfdafe",
+    "tests/book_contract.rs": "5b69b503a226c39171b2e7855537f76c4299391e0b8cd8bfee7dbbf757252c88",
+    "scripts/generate_reference.py": "2dceba0062350b9974ef849224841d450fc06a00f6621c0ba4566deaebc94efe",
+    "src/main.rs": "72cbef55f0dce071d641e36cf973edc82ad1935555935f0147152102e95ea800",
     "tests/contract_traits.rs": "4900fe0594fe8c3262b458d28497771df5c23368df676086868ae93d2f27f644",
-    "scripts/generate_reference.py": "2dceba0062350b9974ef849224841d450fc06a00f6621c0ba4566deaebc94efe"
+    "examples/explain_attention.rs": "b530aa136ea172731ad0e6fe4e9b15d965486da562dc27c34610967acfe5f052",
+    "examples/trace_forward.rs": "b956c3d07b4da5d505439887d74035bcd3a48e50142c10c523cfb0c3696987e1",
+    "tests/parity.rs": "3d8ca8c156b456ec55cfb43fa84385e7b2ea2e1ab9ab012d3f0eb7c1663caba2",
+    "src/lib.rs": "c7cdfabac4b049871dae758ec018984040e293273e138290171a91be4d34a948"
   },
   "last_incremental_changes": 0
 }

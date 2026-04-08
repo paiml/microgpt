@@ -136,6 +136,24 @@ equations:
     - 'scripts/generate_reference.py (Python reference generator)'
     - 'tests/parity.rs (Rust parity validator)'
 
+  hero_svg:
+    formula: |
+      For hero.svg:
+        valid_xml(content) = true
+        has_element("svg", content) = true
+        has_attr("viewBox", root) = true
+        count_elements("script", content) = 0
+        count_elements("foreignObject", content) = 0
+        namespace(root) = "http://www.w3.org/2000/svg"
+    domain: 'assets/hero.svg file content'
+    codomain: 'Boolean (safe to render)'
+    invariants:
+    - Valid XML with SVG namespace
+    - viewBox present for responsive scaling
+    - No embedded scripts (XSS prevention)
+    - No foreignObject elements
+    - Referenced in README.md
+
   book_integrity:
     formula: 'SUMMARY.md references exactly the chapter files that exist, all chapters have valid heading hierarchy'
     domain: 'book/src/ markdown files'
