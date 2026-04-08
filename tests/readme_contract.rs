@@ -1,8 +1,8 @@
 //! README.md contract — validates that every architectural claim in the README
 //! matches the actual source constants and runtime behavior.
 //!
-//! Contract: document-integrity-v1 § required_sections + heading_hierarchy
-//! + table column parity + link well-formedness.
+//! Contract: `document-integrity-v1` § `required_sections` + `heading_hierarchy`
+//! + `table_column_parity` + `link_wellformedness`.
 
 use aprender::autograd::clear_graph;
 use microgpt::*;
@@ -22,6 +22,7 @@ fn readme_no_heading_skips() {
     let mut prev_level = 0u8;
     for line in README.lines() {
         if let Some(stripped) = line.strip_prefix('#') {
+            #[allow(clippy::cast_possible_truncation)]
             let level = 1 + stripped.chars().take_while(|&c| c == '#').count() as u8;
             if prev_level > 0 {
                 assert!(
@@ -140,21 +141,77 @@ fn readme_claims_aprender_only() {
 #[test]
 fn readme_no_broken_link_syntax() {
     for (i, line) in README.lines().enumerate() {
-        // Check for malformed links: [text]( or [text](javascript:
-        if line.contains("](javascript:") {
-            panic!("XSS link at README line {}: {line}", i + 1);
-        }
+        assert!(
+            !line.contains("](javascript:"),
+            "XSS link at README line {}: {line}",
+            i + 1
+        );
     }
 }
 
-// ── Badge contract (CB-1320) ────────────────────────────────────────────────
+// ── Badge contract (CB-1320 + document-integrity-v1 § badge_integrity) ──────
 
 #[test]
-fn readme_has_badges() {
+fn readme_has_ci_badge() {
     assert!(
-        README.contains("shields.io") || README.contains("badge"),
-        "README must contain badges (CB-1320)"
+        README.contains("[![CI]"),
+        "README must have CI badge"
     );
+    assert!(
+        README.contains("actions/workflows/ci.yml/badge.svg"),
+        "CI badge must point to ci.yml workflow"
+    );
+    assert!(
+        README.contains("github.com/paiml/microgpt/actions"),
+        "CI badge must link to paiml/microgpt actions"
+    );
+}
+
+#[test]
+fn readme_has_crate_badge() {
+    assert!(
+        README.contains("[![crate]"),
+        "README must have crate version badge"
+    );
+    assert!(
+        README.contains("img.shields.io/crates/v/microgpt"),
+        "Crate badge must point to microgpt on crates.io"
+    );
+}
+
+#[test]
+fn readme_has_license_badge() {
+    assert!(
+        README.contains("[![license]"),
+        "README must have license badge"
+    );
+    assert!(
+        README.contains("license-MIT-blue"),
+        "License badge must show MIT"
+    );
+}
+
+#[test]
+fn readme_badges_before_h1() {
+    // Badges must appear before the first H1 (standard layout)
+    let h1_pos = README.find("# microGPT").expect("README must have H1");
+    let badge_pos = README.find("[![").expect("README must have badges");
+    assert!(
+        badge_pos < h1_pos,
+        "badges must appear before H1 (badge at {badge_pos}, H1 at {h1_pos})"
+    );
+}
+
+#[test]
+fn readme_badge_urls_use_https() {
+    for line in README.lines() {
+        if line.starts_with("[![") {
+            assert!(
+                !line.contains("http://"),
+                "badge URLs must use HTTPS: {line}"
+            );
+        }
+    }
 }
 
 // ── Table column parity (document-integrity-v1 § table_column_parity) ───────
@@ -167,15 +224,15 @@ fn readme_table_columns_consistent() {
     for (i, line) in README.lines().enumerate() {
         if line.starts_with('|') && line.ends_with('|') {
             let cols = line.chars().filter(|&c| c == '|').count() - 1;
-            if !in_table {
-                in_table = true;
-                expected_cols = cols;
-            } else {
+            if in_table {
                 assert_eq!(
                     cols, expected_cols,
                     "table column count mismatch at README line {} ({cols} vs {expected_cols})",
                     i + 1
                 );
+            } else {
+                in_table = true;
+                expected_cols = cols;
             }
         } else {
             in_table = false;

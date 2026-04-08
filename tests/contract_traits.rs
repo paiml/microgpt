@@ -42,9 +42,17 @@ fn contract_mask_causal_001() {
         for i in 0..size {
             for j in 0..size {
                 if j <= i {
-                    assert_eq!(d[i * size + j], 0.0, "mask[{i}][{j}] should be 0");
+                    assert!(
+                        (d[i * size + j]).abs() < f32::EPSILON,
+                        "mask[{i}][{j}] should be 0, got {}",
+                        d[i * size + j]
+                    );
                 } else {
-                    assert_eq!(d[i * size + j], -1e9, "mask[{i}][{j}] should be -1e9");
+                    assert!(
+                        (d[i * size + j] - (-1e9)).abs() < 1.0,
+                        "mask[{i}][{j}] should be -1e9, got {}",
+                        d[i * size + j]
+                    );
                 }
             }
         }

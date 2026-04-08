@@ -1,6 +1,7 @@
 [![CI](https://github.com/paiml/microgpt/actions/workflows/ci.yml/badge.svg)](https://github.com/paiml/microgpt/actions)
 [![crate](https://img.shields.io/crates/v/microgpt.svg)](https://crates.io/crates/microgpt)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![book](https://img.shields.io/badge/book-mdBook-blue.svg)](https://paiml.github.io/microgpt/)
 
 # microGPT
 
@@ -47,6 +48,11 @@ tokenizer roundtrip, Adam optimizer, and forward-pass shape contracts.
 
 The README itself is under contract — `tests/readme_contract.rs`
 validates that every architectural claim matches the source constants.
+
+## Documentation
+
+Full architecture walkthrough, attention design decisions, and contract
+reference: **[paiml.github.io/microgpt](https://paiml.github.io/microgpt/)**
 
 ## Dependencies
 

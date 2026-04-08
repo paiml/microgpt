@@ -1,0 +1,13 @@
+[book]
+title = "microGPT"
+authors = ["Noah Gift"]
+description = "Karpathy's microGPT ported to Rust with aprender"
+language = "en"
+src = "src"
+
+[build]
+build-dir = "book"
+
+[output.html]
+git-repository-url = "https://github.com/paiml/microgpt"
+edit-url-template = "https://github.com/paiml/microgpt/edit/main/book/{path}"

@@ -93,6 +93,42 @@ equations:
     - All output values are finite for an initialized model
     - Causality enforced via lower-triangular attention mask
 
+  badge_integrity:
+    formula: 'for each badge [![label](img_url)](link_url): img_url uses HTTPS, link_url resolves to correct target'
+    domain: 'README.md badge lines (lines starting with [![)'
+    codomain: 'Boolean (all badges well-formed)'
+    invariants:
+    - CI badge points to ci.yml workflow in paiml/microgpt
+    - Crate badge points to crates.io/crates/microgpt
+    - License badge shows MIT
+    - All badge image URLs use HTTPS
+    - Badges appear before the first H1
+
+  readme_claims:
+    formula: 'for each architectural claim in README table, value == source constant'
+    domain: 'README.md architecture table rows'
+    codomain: 'Boolean (all claims match)'
+    invariants:
+    - Embedding dim matches N_EMBD
+    - Attention heads matches N_HEAD (head_dim=HEAD_DIM)
+    - Context length matches BLOCK_SIZE
+    - Vocab matches VOCAB_SIZE
+    - Parameters matches model.param_count()
+    - Activation matches ReLU
+    - Optimizer betas match BETA1, BETA2
+
+  book_integrity:
+    formula: 'SUMMARY.md references exactly the chapter files that exist, all chapters have valid heading hierarchy'
+    domain: 'book/src/ markdown files'
+    codomain: 'Boolean (book structure valid)'
+    invariants:
+    - SUMMARY.md starts with "# Summary"
+    - All chapter paths in SUMMARY.md resolve to existing files
+    - Each chapter has exactly one H1
+    - No heading level skips in any chapter
+    - All tables have consistent column counts
+    - No XSS links
+
 proof_obligations:
 - id: PARAM-COUNT-001
   type: invariant
@@ -144,6 +180,41 @@ proof_obligations:
   property: logits.shape() == [tokens.len(), 27]
   applies_to: all
 
+- id: BADGE-CI-001
+  type: invariant
+  description: CI badge points to correct workflow
+  equation: badge_integrity
+  property: README contains "actions/workflows/ci.yml/badge.svg" linking to paiml/microgpt/actions
+  applies_to: all
+
+- id: BADGE-HTTPS-001
+  type: invariant
+  description: All badge URLs use HTTPS
+  equation: badge_integrity
+  property: No badge line contains "http://"
+  applies_to: all
+
+- id: README-CLAIMS-001
+  type: invariant
+  description: README table claims match source constants
+  equation: readme_claims
+  property: Each architecture table row matches the corresponding const in lib.rs
+  applies_to: all
+
+- id: BOOK-HIERARCHY-001
+  type: invariant
+  description: All book chapters have valid heading hierarchy
+  equation: book_integrity
+  property: Each chapter has exactly 1 H1, no heading skips
+  applies_to: all
+
+- id: BOOK-SUMMARY-001
+  type: invariant
+  description: SUMMARY.md references all existing chapters
+  equation: book_integrity
+  property: Every chapter path in SUMMARY.md resolves to an existing file
+  applies_to: all
+
 falsification_tests:
 - id: FALSIFY-MG-001
   rule: Forward pass rejects out-of-range tokens
@@ -166,14 +237,15 @@ falsification_tests:
 kani_harnesses: []
 
 verification_summary:
-  total_obligations: 7
-  l2_property_tested: 7
+  total_obligations: 12
+  l2_property_tested: 12
   l3_kani_proved: 7
   l4_lean_proved: 7
   l4_sorry_count: 0
-  l4_not_applicable: 0
+  l4_not_applicable: 5
   notes: >
-    All 7 obligations are concrete arithmetic or structural invariants.
-    L2: property-tested in tests/contract_traits.rs (7/7).
-    L3: decidable by bounded model checking (native_decide in Lean 4).
-    L4/L5: proved in lean/MicroGPT.lean with 0 sorry.
+    12 obligations total: 7 core (param count, one-hot, mask, roundtrip,
+    Adam monotonic, Adam v-nonneg, forward shape) + 5 document integrity
+    (CI badge, HTTPS badges, README claims, book hierarchy, book summary).
+    Core 7: property-tested + Lean proved. Document 5: property-tested only
+    (L4 not applicable — structural markdown checks, not mathematical).
