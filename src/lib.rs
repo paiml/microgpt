@@ -60,7 +60,22 @@ impl MicroGPT {
     /// Forward pass: tokens → logits `[n, VOCAB_SIZE]`.
     ///
     /// Contract: `forward_pass` — output shape `[n, VOCAB_SIZE]`, all finite.
+    ///
+    /// # Panics
+    ///
+    /// Panics if `tokens` is empty, longer than `BLOCK_SIZE`, or contains
+    /// values >= `VOCAB_SIZE`.
     pub fn forward(&self, tokens: &[usize]) -> Tensor {
+        assert!(!tokens.is_empty(), "forward: tokens must not be empty");
+        assert!(
+            tokens.len() <= BLOCK_SIZE,
+            "forward: tokens.len() {} exceeds BLOCK_SIZE {BLOCK_SIZE}",
+            tokens.len()
+        );
+        debug_assert!(
+            tokens.iter().all(|&t| t < VOCAB_SIZE),
+            "forward: token out of range"
+        );
         let n = tokens.len();
         let tok_oh = one_hot(tokens, VOCAB_SIZE);
         let pos_oh = one_hot(&(0..n).collect::<Vec<_>>(), BLOCK_SIZE);
@@ -698,5 +713,35 @@ mod tests {
         let model = MicroGPT::default();
         assert_eq!(model.param_count(), 4192);
         clear_graph();
+    }
+
+    // ── Falsification tests (FALSIFY-MG-*) ──────────────────────────────
+
+    #[test]
+    #[should_panic(expected = "forward: tokens must not be empty")]
+    fn falsify_empty_tokens() {
+        no_grad(|| {
+            let model = MicroGPT::new();
+            let _ = model.forward(&[]);
+        });
+    }
+
+    #[test]
+    #[should_panic(expected = "forward: tokens.len()")]
+    fn falsify_over_length_tokens() {
+        no_grad(|| {
+            let model = MicroGPT::new();
+            let tokens: Vec<usize> = (0..=BLOCK_SIZE).collect();
+            let _ = model.forward(&tokens);
+        });
+    }
+
+    #[test]
+    #[should_panic(expected = "forward: token out of range")]
+    fn falsify_out_of_range_token() {
+        no_grad(|| {
+            let model = MicroGPT::new();
+            let _ = model.forward(&[99]);
+        });
     }
 }

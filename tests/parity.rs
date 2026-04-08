@@ -202,9 +202,9 @@ fn parity_loss() {
 
                 let diff = (rust_loss - py_loss).abs();
                 assert!(
-                    diff < 0.05,
+                    diff < 0.01,
                     "loss parity failed for '{name}' pos={pos}: \
-                     rust={rust_loss:.4} python={py_loss:.4} diff={diff:.4}"
+                     rust={rust_loss:.6} python={py_loss:.6} diff={diff:.6}"
                 );
             }
             eprintln!("  loss parity '{name}': OK");

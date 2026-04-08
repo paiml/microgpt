@@ -36,8 +36,8 @@ $ apr inspect qwen-1.5b-q4k.apr
     RoPE Theta: 1000000
 ```
 
-microGPT is 362,000x smaller than Qwen-1.5B but uses the same
-fundamental operations.
+microGPT is ~360,000x smaller than Qwen-1.5B (1.5B / 4,192 ≈ 358K)
+but uses the same fundamental operations.
 
 ## Tensor inventory
 

@@ -144,7 +144,7 @@ def main():
     sd = generate_weights(SEED)
 
     # Test cases
-    test_names = ["emma", "a", "maria"]
+    test_names = ["emma", "a", "maria", "alexandrina"]  # includes max-length sequence (14 tokens)
     test_cases = []
 
     for name in test_names:
