@@ -117,6 +117,24 @@ equations:
     - Activation matches ReLU
     - Optimizer betas match BETA1, BETA2
 
+  parity:
+    formula: |
+      For identical weights W and input tokens T:
+        |logits_rust(W, T) - logits_python(W, T)| < epsilon for all elements
+        tokenize_rust(name) == tokenize_python(name)
+        hyperparams_rust == hyperparams_python
+    domain: 'shared weights W from seed 42, test names {emma, a, maria}'
+    codomain: 'Boolean (all outputs match within tolerance)'
+    invariants:
+    - Tokenizer produces identical token sequences
+    - Logit max difference < 1e-3 (typically < 1.2e-7 in practice)
+    - Per-position cross-entropy loss difference < 0.05
+    - Hyperparameters match exactly
+    references:
+    - 'Karpathy (2026) microGPT Python implementation'
+    - 'scripts/generate_reference.py (Python reference generator)'
+    - 'tests/parity.rs (Rust parity validator)'
+
   book_integrity:
     formula: 'SUMMARY.md references exactly the chapter files that exist, all chapters have valid heading hierarchy'
     domain: 'book/src/ markdown files'
@@ -180,6 +198,29 @@ proof_obligations:
   property: logits.shape() == [tokens.len(), 27]
   applies_to: all
 
+- id: PARITY-LOGITS-001
+  type: invariant
+  description: Rust logits match Python logits within 1e-3 per element
+  equation: parity
+  property: max |logits_rust - logits_python| < 1e-3
+  tolerance: 1.0e-03
+  applies_to: all
+
+- id: PARITY-TOKENIZER-001
+  type: invariant
+  description: Rust tokenizer produces identical output to Python tokenizer
+  equation: parity
+  property: tokenize_rust(name) == tokenize_python(name) for all test names
+  applies_to: all
+
+- id: PARITY-LOSS-001
+  type: invariant
+  description: Cross-entropy loss matches within 0.05 per position
+  equation: parity
+  property: |loss_rust - loss_python| < 0.05 per position
+  tolerance: 0.05
+  applies_to: all
+
 - id: BADGE-CI-001
   type: invariant
   description: CI badge points to correct workflow
@@ -237,8 +278,8 @@ falsification_tests:
 kani_harnesses: []
 
 verification_summary:
-  total_obligations: 12
-  l2_property_tested: 12
+  total_obligations: 15
+  l2_property_tested: 15
   l3_kani_proved: 7
   l4_lean_proved: 7
   l4_sorry_count: 0

@@ -36,10 +36,26 @@ jobs:
       - name: Coverage
         run: |
           cargo llvm-cov --lib --summary-only 2>&1 | tee coverage.txt
-          # Extract line coverage percentage and fail if below 95%
           COVERAGE=$(grep TOTAL coverage.txt | awk '{print $NF}' | tr -d '%')
           echo "Line coverage: ${COVERAGE}%"
           if (( $(echo "$COVERAGE < 95" | bc -l) )); then
             echo "::error::Coverage ${COVERAGE}% is below 95% threshold"
             exit 1
           fi
+
+  parity:
+    name: Python ↔ Rust Parity
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Generate Python reference (Karpathy's forward pass)
+        run: python3 scripts/generate_reference.py
+
+      - name: Run Rust parity tests
+        run: cargo test --test parity -- --nocapture
