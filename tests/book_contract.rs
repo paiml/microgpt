@@ -10,6 +10,9 @@ const ATTENTION: &str = include_str!("../book/src/architecture/attention.md");
 const TRAINING: &str = include_str!("../book/src/architecture/training.md");
 const LADDER: &str = include_str!("../book/src/contracts/verification-ladder.md");
 const REFERENCE: &str = include_str!("../book/src/contracts/reference.md");
+const INSPECT: &str = include_str!("../book/src/introspection/inspect.md");
+const EXPLAIN: &str = include_str!("../book/src/introspection/explain.md");
+const TRACE: &str = include_str!("../book/src/introspection/trace.md");
 
 // ── SUMMARY.md structure ────────────────────────────────────────────────────
 
@@ -29,6 +32,9 @@ fn summary_links_resolve() {
         "architecture/model.md",
         "architecture/attention.md",
         "architecture/training.md",
+        "introspection/inspect.md",
+        "introspection/explain.md",
+        "introspection/trace.md",
         "contracts/verification-ladder.md",
         "contracts/reference.md",
     ];
@@ -92,6 +98,9 @@ fn chapters_single_h1() {
         (MODEL, "model.md"),
         (ATTENTION, "attention.md"),
         (TRAINING, "training.md"),
+        (INSPECT, "inspect.md"),
+        (EXPLAIN, "explain.md"),
+        (TRACE, "trace.md"),
         (LADDER, "verification-ladder.md"),
         (REFERENCE, "reference.md"),
     ] {
@@ -106,6 +115,9 @@ fn chapters_no_heading_skips() {
         (MODEL, "model.md"),
         (ATTENTION, "attention.md"),
         (TRAINING, "training.md"),
+        (INSPECT, "inspect.md"),
+        (EXPLAIN, "explain.md"),
+        (TRACE, "trace.md"),
         (LADDER, "verification-ladder.md"),
         (REFERENCE, "reference.md"),
     ] {
@@ -145,6 +157,35 @@ fn training_page_claims_5000_steps() {
 fn training_page_claims_beta_values() {
     assert!(TRAINING.contains("0.85"), "training.md must list beta1=0.85");
     assert!(TRAINING.contains("0.99"), "training.md must list beta2=0.99");
+}
+
+// ── Introspection chapters reference apr commands ────────────────────────────
+
+#[test]
+fn inspect_page_references_apr_commands() {
+    assert!(INSPECT.contains("apr inspect"), "inspect.md must reference apr inspect");
+    assert!(INSPECT.contains("apr tensors"), "inspect.md must reference apr tensors");
+    assert!(INSPECT.contains("apr explain --kernel"), "inspect.md must reference apr explain --kernel");
+    assert!(INSPECT.contains("apr explain --tensor"), "inspect.md must reference apr explain --tensor");
+}
+
+#[test]
+fn explain_page_references_apr_commands() {
+    assert!(EXPLAIN.contains("apr explain"), "explain.md must reference apr explain");
+    assert!(EXPLAIN.contains("apr explain --kernel"), "explain.md must reference apr explain --kernel");
+}
+
+#[test]
+fn trace_page_references_apr_commands() {
+    assert!(TRACE.contains("apr trace"), "trace.md must reference apr trace");
+    assert!(TRACE.contains("cargo run --example trace_forward"), "trace.md must reference trace example");
+}
+
+#[test]
+fn introspection_pages_reference_examples() {
+    assert!(INSPECT.contains("cargo run --example inspect_model"));
+    assert!(EXPLAIN.contains("cargo run --example explain_attention"));
+    assert!(TRACE.contains("cargo run --example trace_forward"));
 }
 
 // ── Table column parity ─────────────────────────────────────────────────────
@@ -192,6 +233,9 @@ fn no_xss_links_in_book() {
         (MODEL, "model.md"),
         (ATTENTION, "attention.md"),
         (TRAINING, "training.md"),
+        (INSPECT, "inspect.md"),
+        (EXPLAIN, "explain.md"),
+        (TRACE, "trace.md"),
         (LADDER, "verification-ladder.md"),
         (REFERENCE, "reference.md"),
     ] {
