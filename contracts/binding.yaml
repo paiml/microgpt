@@ -61,7 +61,8 @@ bindings:
 
 - contract: microgpt-v1.yaml
   equation: parity
-  module_path: tests::parity
-  function: parity_forward_logits
-  signature: 'fn parity_forward_logits()'
+  module_path: microgpt
+  function: MicroGPT::forward
+  signature: 'fn forward(&self, tokens: &[usize]) -> Tensor'
   status: implemented
+  notes: parity validated by tests/parity.rs against Python reference

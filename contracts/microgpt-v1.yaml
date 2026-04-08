@@ -30,6 +30,7 @@ equations:
     - All other entries are 0.0
     - Output shape is [n, C]
     - Row sum equals 1.0 for every row
+    lean_theorem: MicroGPT.param_count
 
   rms_norm:
     formula: 'rms_norm(x)[i] = x[i] / sqrt(mean(x[i]^2) + eps)'
