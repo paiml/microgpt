@@ -1,0 +1,5 @@
+[thresholds]
+min_test_coverage = 95
+max_complexity = 20
+max_file_lines = 500
+min_grade = "B"

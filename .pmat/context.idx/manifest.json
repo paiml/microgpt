@@ -1,0 +1,16 @@
+{
+  "version": "1.4.0",
+  "built_at": "2026-04-08T06:42:52.827885816+00:00",
+  "project_root": "/home/noah/src/microgpt",
+  "function_count": 57,
+  "file_count": 2,
+  "languages": [
+    "Rust"
+  ],
+  "avg_tdg_score": 0.07298242,
+  "file_checksums": {
+    "src/main.rs": "72cbef55f0dce071d641e36cf973edc82ad1935555935f0147152102e95ea800",
+    "src/lib.rs": "e0849d61d9f52450aa2002077176f1d9001b218564dd19a61a4b97c58ced367b"
+  },
+  "last_incremental_changes": 0
+}

@@ -1,0 +1,60 @@
+version: 1.0.0
+target_crate: microgpt
+contract_policy: AllImplemented
+
+bindings:
+- contract: microgpt-v1.yaml
+  equation: one_hot
+  module_path: microgpt
+  function: one_hot
+  signature: 'fn one_hot(indices: &[usize], num_classes: usize) -> Tensor'
+  status: implemented
+
+- contract: microgpt-v1.yaml
+  equation: rms_norm
+  module_path: microgpt
+  function: rms_norm
+  signature: 'fn rms_norm(x: &Tensor) -> Tensor'
+  status: implemented
+
+- contract: microgpt-v1.yaml
+  equation: causal_mask
+  module_path: microgpt
+  function: causal_mask
+  signature: 'fn causal_mask(size: usize) -> Tensor'
+  status: implemented
+
+- contract: microgpt-v1.yaml
+  equation: tokenize_decode
+  module_path: microgpt
+  function: tokenize
+  signature: 'fn tokenize(name: &str) -> Vec<usize>'
+  status: implemented
+
+- contract: microgpt-v1.yaml
+  equation: tokenize_decode
+  module_path: microgpt
+  function: decode
+  signature: 'fn decode(tokens: &[usize]) -> String'
+  status: implemented
+
+- contract: microgpt-v1.yaml
+  equation: weighted_sample
+  module_path: microgpt
+  function: weighted_sample_with_r
+  signature: 'fn weighted_sample_with_r(probs: &[f32], r: f32) -> usize'
+  status: implemented
+
+- contract: microgpt-v1.yaml
+  equation: adam_step
+  module_path: microgpt
+  function: Adam::step
+  signature: 'fn step(&mut self, params: &mut [&mut Tensor], lr: f32)'
+  status: implemented
+
+- contract: microgpt-v1.yaml
+  equation: forward_pass
+  module_path: microgpt
+  function: MicroGPT::forward
+  signature: 'fn forward(&self, tokens: &[usize]) -> Tensor'
+  status: implemented

@@ -7,7 +7,22 @@ authors = ["Noah Gift <noah@paiml.com>"]
 license = "MIT"
 description = "Karpathy's microGPT ported to Rust with aprender — a 4,192-parameter GPT that generates names"
 repository = "https://github.com/paiml/microgpt"
+exclude = ["data/"]
+
+[lib]
+name = "microgpt"
+path = "src/lib.rs"
+
+[[bin]]
+name = "microgpt"
+path = "src/main.rs"
 
 [dependencies]
 aprender-core = "0.29"
 rand = "0.9"
+
+[lints.clippy]
+pedantic = { level = "warn", priority = -1 }
+missing_panics_doc = "allow"
+must_use_candidate = "allow"
+module_name_repetitions = "allow"
