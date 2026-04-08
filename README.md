@@ -1,3 +1,7 @@
+[![CI](https://github.com/paiml/microgpt/actions/workflows/ci.yml/badge.svg)](https://github.com/paiml/microgpt/actions)
+[![crate](https://img.shields.io/crates/v/microgpt.svg)](https://crates.io/crates/microgpt)
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 # microGPT
 
 Karpathy's [microGPT](https://karpathy.github.io/2026/02/12/microgpt/) ported to Rust with [aprender](https://github.com/paiml/aprender).
@@ -40,6 +44,9 @@ name-like outputs (e.g. "karila", "maria", "misha").
 See [`contracts/microgpt-v1.yaml`](contracts/microgpt-v1.yaml) for
 formal invariants covering one-hot encoding, RMSNorm, causal masking,
 tokenizer roundtrip, Adam optimizer, and forward-pass shape contracts.
+
+The README itself is under contract — `tests/readme_contract.rs`
+validates that every architectural claim matches the source constants.
 
 ## Dependencies
 
